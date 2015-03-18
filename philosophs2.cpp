@@ -18,9 +18,15 @@ int getRandom();
 void printTab(int);
 
 HANDLE forks[PHILOSOPHS_NUMBER];
+HANDLE constraint;
 
 int _tmain(int argc, _TCHAR* argv[])
 {
+  constraint = CreateSemaphore (NULL, // default security attributes
+    PHILOSOPHS_NUMBER - 1, // initial count
+    PHILOSOPHS_NUMBER - 1, //maximum count
+    NULL); // object name
+
   for(int i = 0; i < PHILOSOPHS_NUMBER; ++i)
   {
     char integer_string[32];
@@ -44,6 +50,7 @@ void Philosoph (void * number)
 
   while(true)
   {
+  WaitForSingleObject (constraint,INFINITE);
     printTab(fork1Num);printf("Philosoph %d is sleeping\n", fork1Num);
     Sleep((getRandom() % 10) * 1000);
     printTab(fork1Num);printf("Philosoph %d is waking up\n", fork1Num);
@@ -76,6 +83,7 @@ void Philosoph (void * number)
     SetEvent(forks[fork1Num]);
     SetEvent(forks[fork2Num]);
     printTab(fork1Num);printf("Philosoph %d returned all forks\n", fork1Num);
+  ReleaseSemaphore (constraint,1, NULL);
   }
 }
 
