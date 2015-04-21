@@ -50,6 +50,8 @@ void Philosoph (void * number)
 
   while(true)
   {
+    // чтобы одновмременно все философы не смогли взять все вилки
+    // пускаем максимально н-1 философ
   WaitForSingleObject (constraint,INFINITE);
     printTab(fork1Num);printf("Philosoph %d is sleeping\n", fork1Num);
     Sleep((getRandom() % 10) * 1000);
@@ -58,6 +60,7 @@ void Philosoph (void * number)
     int fork1 = 1;
     int fork2 = 1;
 
+    // будем ждать пока вилка не освободится(WaitForSingleObject возвращает 0, когда освобождается)
     while (fork1 != 0)
     {
       printTab(fork1Num);printf("Philosoph %d is trying to take %d fork\n", fork1Num, fork1Num);

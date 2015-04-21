@@ -80,6 +80,7 @@ int main() {
   pointer = -1;
 
   sem_init(&online_clients, 0, 0);
+  // мьютекс, который блокирует очередь для безопсаной работы с ней(чтоб одновременно не могли изменять ее размер)
   pthread_mutex_init(&queue_locker, NULL);
 
   pthread_create(&barber, NULL, barber_worker, NULL);

@@ -70,11 +70,15 @@ void *consumer(void *arg)
 
 void main() 
 {
+  // init threads arrays
   pthread_t ptreads[NP];
   pthread_t ctreads[NC];
 
+  // init mutex as semaphore to block queue
   sem_init(&c.mutex, 0, 1);
+  // init empty semaphore to store info about amount of used places in buffer
   sem_init(&c.empty, 0, 0);
+  // init empty semaphore to store info about amount of free places in buffer
   sem_init(&c.full, 0, BUF_SIZE);
   c.pointer = 0;
   int i;
